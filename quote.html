@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="id" class="antialiased scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Quotation — Ajukan Penawaran B2B UD NIMARS</title>
+    <meta name="description" content="Ajukan permintaan penawaran harga B2B untuk kebutuhan sayuran, buah, dan bumbu segar. Formulir aman, respons cepat.">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#2D5A27', secondary: '#3E7A35', accent: '#F2994A', cta: '#E67E22',
+                            darkText: '#1D1D1F', bg: '#F8FAF8', border: '#E5E7EB', success: '#22C55E', error: '#EF4444',
+                            darkBg: '#0F1A0D', darkSurface: '#1A2B17', darkTextHover: '#E8EDE7', darkBorder: '#2D3B2A'
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Montserrat', 'sans-serif'], }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { background-color: #F8FAF8; color: #1D1D1F; transition: background-color 0.3s, color 0.3s; }
+        .dark body { background-color: #0F1A0D; color: #E8EDE7; }
+        h1, h2, h3, h4 { letter-spacing: -0.02em; }
+        p { line-height: 1.7; }
+        
+        /* Header */
+        .capsule-header {
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1280px; z-index: 50;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid #E5E7EB; border-radius: 9999px;
+            transition: all 0.3s ease; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px;
+        }
+        .dark .capsule-header { background: rgba(26, 43, 23, 0.95); border-color: #2D3B2A; }
+        .capsule-header.scrolled { top: 16px; box-shadow: 0 15px 40px rgba(45, 90, 39, 0.12); }
+        
+        .nav-link {
+            position: relative; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #1D1D1F; padding-bottom: 4px; transition: color 0.3s;
+        }
+        .dark .nav-link { color: #E8EDE7; }
+        .nav-link:hover { color: #F2994A; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: #F2994A; transition: all 0.3s ease; transform: translateX(-50%);
+        }
+        .nav-link:hover::after { width: 100%; }
+        
+        .btn-elastic { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+        .btn-elastic:hover { transform: scale(1.02); }
+        .btn-elastic:active { transform: scale(0.98); }
+        .btn-elastic:disabled { opacity: 0.7; pointer-events: none; transform: none; }
+        
+        .section-label { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; color: #F2994A; display: inline-flex; align-items: center; gap: 12px; }
+        .section-label::before, .section-label::after { content: ''; width: 30px; height: 2px; background: #F2994A; }
+
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(15, 26, 13, 0.9), rgba(45, 90, 39, 0.8)), url('hero_coldstore.png');
+            background-size: cover; background-position: center;
+        }
+
+        /* Form Floating Labels & Inputs */
+        .float-group { position: relative; margin-bottom: 1.5rem; }
+        .float-input {
+            width: 100%; padding: 1.25rem 1rem 0.5rem 3rem; border: 2px solid #E5E7EB; border-radius: 0.75rem;
+            background-color: #F9FAFB; font-family: 'Inter', sans-serif; color: #1D1D1F; font-size: 1rem;
+            transition: all 0.3s ease; appearance: none; outline: none;
+        }
+        .dark .float-input { background-color: #1A2B17; border-color: #2D3B2A; color: #E8EDE7; }
+        
+        .float-input:focus { border-color: #2D5A27; background-color: #FFFFFF; box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1); }
+        .dark .float-input:focus { border-color: #F2994A; background-color: #0F1A0D; box-shadow: 0 0 0 4px rgba(242, 153, 74, 0.1); }
+        
+        .float-input.error { border-color: #EF4444; background-color: #FEF2F2; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1); }
+        .dark .float-input.error { background-color: rgba(239, 68, 68, 0.1); }
+        
+        .float-label {
+            position: absolute; left: 3rem; top: 1rem; color: #9CA3AF; font-size: 1rem; pointer-events: none;
+            transition: all 0.2s ease-out; transform-origin: left top;
+        }
+        
+        .float-input:focus ~ .float-label,
+        .float-input:not(:placeholder-shown) ~ .float-label {
+            top: 0.35rem; font-size: 0.75rem; color: #2D5A27; font-weight: 600;
+        }
+        .dark .float-input:focus ~ .float-label,
+        .dark .float-input:not(:placeholder-shown) ~ .float-label { color: #F2994A; }
+        .float-input.error ~ .float-label { color: #EF4444 !important; }
+        
+        .input-icon { position: absolute; left: 1rem; top: 1rem; color: #9CA3AF; transition: color 0.3s; }
+        .float-input:focus ~ .input-icon { color: #2D5A27; }
+        .dark .float-input:focus ~ .input-icon { color: #F2994A; }
+        .float-input.error ~ .input-icon { color: #EF4444; }
+        
+        select.float-input { padding-top: 1rem; padding-bottom: 1rem; }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 100; pointer-events: none; }
+        .toast {
+            transform: translateY(150px); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 1rem 1.5rem; border-radius: 0.75rem; display: flex; items-center; gap: 0.75rem; color: white;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); pointer-events: auto; max-width: 350px;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background-color: #22C55E; }
+        .toast.error { background-color: #EF4444; }
+
+        /* Custom Spinner */
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        #mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        #mobile-menu { transition: opacity 0.3s, visibility 0.3s; }
+
+        /* WhatsApp Floating Button */
+        .wa-float {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 90;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: #25D366; color: white;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5); }
+        .wa-float .wa-tooltip {
+            position: absolute; right: 72px; top: 50%; transform: translateY(-50%);
+            background: #1D1D1F; color: white; font-size: 0.8rem; font-weight: 600;
+            padding: 8px 14px; border-radius: 8px; white-space: nowrap;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .wa-float:hover .wa-tooltip { opacity: 1; }
+
+        /* Volume Calculator */
+        .calc-range {
+            -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px;
+            background: linear-gradient(to right, #E5E7EB 0%, #E5E7EB 100%); outline: none;
+            transition: background 0.3s;
+        }
+        .calc-range::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+            background: #F2994A; cursor: pointer; border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .dark .calc-range { background: #2D3B2A; }
+        .tier-badge { transition: all 0.3s ease; }
+        .tier-badge.active { transform: scale(1.05); box-shadow: 0 0 0 3px rgba(242,153,74,0.4); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="capsule-header" id="main-header">
+        <div class="hidden lg:flex items-center gap-6 flex-1 justify-end pr-8">
+            <a href="about.html" class="nav-link">Tentang Kami</a>
+            <a href="produk.html" class="nav-link">Produk</a>
+        </div>
+        
+        <div class="flex-shrink-0 flex items-center justify-center">
+            <a href="index.html" aria-label="Home">
+                <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5C25.147 5 5 25.147 5 50C5 74.853 25.147 95 50 95C74.853 95 95 74.853 95 50C95 25.147 74.853 5 50 5Z" fill="#2D5A27"/>
+                    <path d="M95 50C95 25.147 74.853 5 50 5V95C74.853 95 95 74.853 95 50Z" fill="#1A3317"/>
+                    <path d="M50 85V40" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M50 65C35 65 25 50 25 50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M50 55C65 55 75 40 75 40" stroke="#F2994A" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="50" cy="25" r="8" fill="#F2994A"/>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="hidden lg:flex items-center gap-6 flex-1 pl-8">
+            <a href="team.html" class="nav-link">Tim Kami</a>
+            <a href="kontak.html" class="nav-link">Kontak</a>
+            <div class="w-px h-6 bg-brand-border dark:bg-brand-darkBorder"></div>
+            <button id="theme-toggle" class="text-brand-darkText dark:text-brand-darkTextHover hover:text-brand-accent transition-colors">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <div class="flex lg:hidden items-center gap-4">
+            <button id="theme-toggle-mobile" class="text-brand-darkText dark:text-brand-darkTextHover">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+            <button id="mobile-menu-btn" class="text-brand-darkText dark:text-brand-darkTextHover">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 dark:bg-brand-darkBg/95 backdrop-blur-md z-[100] flex-col items-center justify-center gap-8 hidden">
+        <button id="close-mobile-menu" class="absolute top-6 right-6 p-2 text-brand-darkText dark:text-brand-darkTextHover">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <a href="index.html" class="font-display font-black text-3xl text-brand-darkText dark:text-white hover:text-brand-accent">Home</a>
+        <a href="about.html" class="font-display font-black text-3xl text-brand-darkText dark:text-white hover:text-brand-accent">Tentang Kami</a>
+        <a href="produk.html" class="font-display font-black text-3xl text-brand-darkText dark:text-white hover:text-brand-accent">Produk</a>
+        <a href="team.html" class="font-display font-black text-3xl text-brand-darkText dark:text-white hover:text-brand-accent">Tim Kami</a>
+        <a href="kontak.html" class="font-display font-black text-3xl text-brand-darkText dark:text-white hover:text-brand-accent">Kontak</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 hero-bg overflow-hidden text-center text-white">
+        <div class="relative z-10 max-w-4xl mx-auto px-6 reveal">
+            <span class="section-label mb-6 text-brand-accent">Request for Quotation</span>
+            <h1 class="font-display font-black text-4xl md:text-5xl leading-tight mb-4 drop-shadow-lg">
+                Ajukan Penawaran Harga B2B
+            </h1>
+            <p class="font-sans text-lg text-white/90 max-w-2xl mx-auto">
+                Silakan lengkapi formulir di bawah ini dengan spesifikasi kebutuhan Anda. Tim kami akan merespons dalam waktu kurang dari 24 jam dengan struktur harga terbaik.
+            </p>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="py-16 max-w-7xl mx-auto px-6 -mt-8 relative z-20">
+        <div class="flex flex-col lg:flex-row gap-10">
+            
+            <!-- Left: Form -->
+            <div class="flex-1 bg-white dark:bg-brand-darkSurface p-8 md:p-12 rounded-3xl shadow-xl border border-brand-border dark:border-brand-darkBorder reveal">
+                <!-- Security Badge -->
+                <div class="flex items-center gap-3 text-brand-primary dark:text-brand-accent mb-8 bg-green-50 dark:bg-brand-primary/10 p-4 rounded-xl">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                    <div>
+                        <div class="font-bold text-sm">Data Anda Dilindungi SSL</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400">Kami menjaga privasi data pengadaan korporat Anda.</div>
+                    </div>
+                </div>
+
+                <form id="rfq-form" class="space-y-6" novalidate>
+                    <!-- Row 1 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="float-group">
+                            <input type="text" id="fullname" name="fullname" class="float-input" placeholder=" " required>
+                            <label for="fullname" class="float-label">Nama Lengkap (Representatif)</label>
+                            <i data-lucide="user" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                        <div class="float-group">
+                            <input type="text" id="company" name="company" class="float-input" placeholder=" " required>
+                            <label for="company" class="float-label">Nama Perusahaan</label>
+                            <i data-lucide="building-2" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="float-group">
+                            <input type="email" id="email" name="email" class="float-input" placeholder=" " required>
+                            <label for="email" class="float-label">Email Korporat</label>
+                            <i data-lucide="mail" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                        <div class="float-group">
+                            <input type="tel" id="whatsapp" name="whatsapp" class="float-input" placeholder=" " required>
+                            <label for="whatsapp" class="float-label">Nomor WhatsApp</label>
+                            <i data-lucide="phone" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                    </div>
+
+                    <!-- Row 3 Dropdowns -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="float-group">
+                            <select id="industry" name="industry" class="float-input !pl-12" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="hotel">Hotel & Resort</option>
+                                <option value="resto">Jaringan Restoran / Cafe</option>
+                                <option value="catering">Katering Institusional</option>
+                                <option value="retail">Retail Supermarket</option>
+                                <option value="other">Lainnya</option>
+                            </select>
+                            <label for="industry" class="float-label">Kategori Industri</label>
+                            <i data-lucide="briefcase" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                        <div class="float-group">
+                            <select id="frequency" name="frequency" class="float-input !pl-12" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="harian">Harian</option>
+                                <option value="mingguan">Mingguan</option>
+                                <option value="insidental">Insidental / Sekali Kirim</option>
+                            </select>
+                            <label for="frequency" class="float-label">Frekuensi Suplai</label>
+                            <i data-lucide="calendar" class="input-icon w-5 h-5"></i>
+                            <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                        </div>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="float-group">
+                        <textarea id="specs" name="specs" rows="4" class="float-input !pt-6" placeholder=" " required></textarea>
+                        <label for="specs" class="float-label">Spesifikasi Komoditas & Volume Tonase</label>
+                        <i data-lucide="clipboard-list" class="input-icon w-5 h-5"></i>
+                        <p class="error-msg text-brand-error text-xs mt-1 hidden"></p>
+                    </div>
+
+                    <!-- Consent -->
+                    <div class="flex items-start gap-3 mt-4">
+                        <input type="checkbox" id="consent" name="consent" class="mt-1 w-5 h-5 rounded border-gray-300 text-brand-primary focus:ring-brand-primary" required>
+                        <label for="consent" class="text-sm text-gray-600 dark:text-gray-400 leading-tight">
+                            Saya menyetujui <a href="#" class="text-brand-primary dark:text-brand-accent underline">Data Protection Policy</a> dan memberikan wewenang kepada UD NIMARS untuk menghubungi saya terkait penawaran ini.
+                        </label>
+                    </div>
+                    <p id="consent-error" class="error-msg text-brand-error text-xs hidden">Anda harus menyetujui kebijakan perlindungan data.</p>
+
+                    <!-- Submit -->
+                    <button type="submit" id="submit-btn" class="btn-elastic w-full bg-brand-cta text-white py-4 rounded-xl font-display font-bold text-lg shadow-lg hover:bg-orange-600 mt-8">
+                        <span>Kirim Request Quotation</span>
+                        <i data-lucide="send" class="w-5 h-5 ml-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Sidebar -->
+            <div class="lg:w-1/3 space-y-6 reveal" style="transition-delay: 200ms;">
+                <div class="bg-brand-primary dark:bg-brand-darkSurface text-white p-8 rounded-3xl shadow-lg border border-transparent dark:border-brand-darkBorder">
+                    <h3 class="font-display font-bold text-2xl mb-6">Mengapa UD NIMARS?</h3>
+                    <ul class="space-y-5">
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-accent/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="check" class="w-5 h-5 text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">150+ Klien Aktif</h4>
+                                <p class="text-white/70 text-sm">Portofolio HORECA terpercaya di Jabodetabek.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-accent/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="clock" class="w-5 h-5 text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">98% SLA On-Time</h4>
+                                <p class="text-white/70 text-sm">Cold fleet logistik kami menjamin ketepatan waktu.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-accent/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="refresh-ccw" class="w-5 h-5 text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Garansi Retur H+1</h4>
+                                <p class="text-white/70 text-sm">Penggantian otomatis tanpa prosedur berbelit.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-brand-accent/20 flex items-center justify-center shrink-0">
+                                <i data-lucide="file-text" class="w-5 h-5 text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Fixed Pricing Agreement</h4>
+                                <p class="text-white/70 text-sm">Stabilitas harga bahan baku untuk dapur Anda.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white dark:bg-brand-darkSurface p-8 rounded-3xl border border-brand-border dark:border-brand-darkBorder text-center">
+                    <h4 class="font-bold text-gray-800 dark:text-white mb-2">Butuh Bantuan Langsung?</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Tim representatif kami siap melayani Anda.</p>
+                    <a href="#" class="inline-flex items-center gap-2 text-brand-primary dark:text-brand-accent font-bold hover:underline">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Chat via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Volume Estimator Calculator -->
+    <section class="py-16 max-w-7xl mx-auto px-6">
+        <div class="bg-white dark:bg-brand-darkSurface p-8 md:p-12 rounded-3xl shadow-xl border border-brand-border dark:border-brand-darkBorder reveal">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-brand-accent/10 rounded-xl flex items-center justify-center">
+                    <i data-lucide="calculator" class="w-6 h-6 text-brand-accent"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-xl text-brand-darkText dark:text-white">Kalkulator Estimasi Volume</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Geser slider untuk melihat tier diskon yang berlaku</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Estimasi Volume Mingguan</label>
+                    <input type="range" id="vol-slider" class="calc-range" min="50" max="5000" value="500" step="50">
+                    <div class="flex justify-between mt-2 text-xs text-gray-400">
+                        <span>50 Kg</span>
+                        <span id="vol-display" class="text-lg font-display font-bold text-brand-accent">500 Kg</span>
+                        <span>5.000 Kg</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div id="tier-1" class="tier-badge p-4 rounded-2xl border-2 border-brand-border dark:border-brand-darkBorder text-center bg-gray-50 dark:bg-brand-darkBg">
+                        <div class="text-xs font-semibold text-gray-400 uppercase mb-1">Standard</div>
+                        <div class="font-display font-bold text-lg text-brand-darkText dark:text-white">0%</div>
+                        <div class="text-xs text-gray-400 mt-1">< 500 Kg</div>
+                    </div>
+                    <div id="tier-2" class="tier-badge p-4 rounded-2xl border-2 border-brand-border dark:border-brand-darkBorder text-center bg-gray-50 dark:bg-brand-darkBg">
+                        <div class="text-xs font-semibold text-gray-400 uppercase mb-1">Volume</div>
+                        <div class="font-display font-bold text-lg text-brand-darkText dark:text-white">5%</div>
+                        <div class="text-xs text-gray-400 mt-1">500 - 2000 Kg</div>
+                    </div>
+                    <div id="tier-3" class="tier-badge p-4 rounded-2xl border-2 border-brand-border dark:border-brand-darkBorder text-center bg-gray-50 dark:bg-brand-darkBg">
+                        <div class="text-xs font-semibold text-gray-400 uppercase mb-1">Enterprise</div>
+                        <div class="font-display font-bold text-lg text-brand-darkText dark:text-white">10%</div>
+                        <div class="text-xs text-gray-400 mt-1">> 2000 Kg</div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mt-6">* Diskon aktual dapat bervariasi berdasarkan jenis komoditas dan durasi kontrak. Hubungi tim sales untuk penawaran final.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-darkBg pt-20 pb-10 border-t border-brand-darkBorder text-white/80 mt-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+            <div class="lg:col-span-2">
+                <a href="index.html" class="inline-block mb-6">
+                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5C25.147 5 5 25.147 5 50C5 74.853 25.147 95 50 95C74.853 95 95 74.853 95 50C95 25.147 74.853 5 50 5Z" fill="#2D5A27"/>
+                        <path d="M95 50C95 25.147 74.853 5 50 5V95C74.853 95 95 74.853 95 50Z" fill="#1A3317"/>
+                        <path d="M50 85V40" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M50 65C35 65 25 50 25 50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M50 55C65 55 75 40 75 40" stroke="#F2994A" stroke-width="6" stroke-linecap="round"/>
+                        <circle cx="50" cy="25" r="8" fill="#F2994A"/>
+                    </svg>
+                </a>
+                <p class="text-sm mb-6 leading-relaxed">Distributor sayuran dan buah segar premium B2B. Memastikan standar kualitas HORECA tertinggi dengan cold-chain logistics.</p>
+                <div>
+                    <h5 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Metode Pembayaran</h5>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-semibold">Transfer Bank</span>
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-semibold">Invoice Tempo</span>
+                        <span class="px-3 py-1.5 bg-white/10 rounded-lg text-xs font-semibold">NET 30/60</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider">Perusahaan</h4>
+                <ul class="space-y-4">
+                    <li><a href="about.html" class="hover:text-brand-accent transition-colors">Tentang Kami</a></li>
+                    <li><a href="team.html" class="hover:text-brand-accent transition-colors">Tim Operasional</a></li>
+                    <li><a href="kontak.html" class="hover:text-brand-accent transition-colors">Kontak</a></li>
+                    <li><a href="quote.html" class="hover:text-brand-accent transition-colors">Request Quote</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider">Katalog</h4>
+                <ul class="space-y-4">
+                    <li><a href="produk.html" class="hover:text-brand-accent transition-colors">Semua Produk</a></li>
+                </ul>
+                <h4 class="font-display font-bold text-white mt-8 mb-4 uppercase tracking-wider">Bantuan</h4>
+                <ul class="space-y-4">
+                    <li><a href="produk.html#faq" class="hover:text-brand-accent transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider">Hubungi Kami</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center gap-3"><i data-lucide="phone" class="w-5 h-5 text-brand-accent shrink-0"></i><span>+62 812 3456 7890</span></li>
+                    <li class="flex items-center gap-3"><i data-lucide="mail" class="w-5 h-5 text-brand-accent shrink-0"></i><span>partnership@udnimars.com</span></li>
+                    <li class="flex items-center gap-3"><i data-lucide="clock" class="w-5 h-5 text-brand-accent shrink-0"></i><span>Sen - Sab | 06:00 - 18:00</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 pt-8 border-t border-brand-darkBorder text-center text-sm flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 UD NIMARS. All Rights Reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/6281234567890?text=Halo%20UD%20NIMARS%2C%20saya%20tertarik%20untuk%20berdiskusi%20tentang%20kebutuhan%20suplai%20segar%20kami." target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Chat via WhatsApp">
+        <span class="wa-tooltip">Chat via WhatsApp</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container">
+        <div id="toast" class="toast">
+            <i id="toast-icon" data-lucide="check-circle" class="w-6 h-6 shrink-0"></i>
+            <div>
+                <h5 id="toast-title" class="font-bold text-sm">Sukses</h5>
+                <p id="toast-msg" class="text-sm opacity-90">Request Quotation berhasil dikirim.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // Shared functionality (Header, Dark mode, Observers, Mobile Menu)
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.remove('hidden'); document.body.style.overflow = 'hidden'; });
+        closeMobileMenu.addEventListener('click', () => { mobileMenu.classList.add('hidden'); document.body.style.overflow = ''; });
+
+        const html = document.documentElement;
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+        function toggleTheme() { html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light'); }
+        themeToggles.forEach(btn => btn?.addEventListener('click', toggleTheme));
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); obs.unobserve(entry.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Form Validation & Processing Logic
+        const form = document.getElementById('rfq-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toast-title');
+        const toastMsg = document.getElementById('toast-msg');
+        const toastIcon = document.getElementById('toast-icon');
+        let toastTimeout;
+
+        function showToast(type, title, message) {
+            clearTimeout(toastTimeout);
+            toast.className = `toast ${type}`;
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+            
+            // Re-render icon
+            const newIcon = document.createElement('i');
+            newIcon.id = 'toast-icon';
+            newIcon.className = 'w-6 h-6 shrink-0';
+            newIcon.setAttribute('data-lucide', type === 'success' ? 'check-circle' : 'alert-circle');
+            toastIcon.replaceWith(newIcon);
+            lucide.createIcons();
+
+            // Trigger reflow for animation
+            void toast.offsetWidth;
+            toast.classList.add('show');
+
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.float-input').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+        }
+
+        function showError(inputId, msg) {
+            const input = document.getElementById(inputId);
+            input.classList.add('error');
+            const errorEl = input.parentElement.querySelector('.error-msg');
+            if(errorEl) {
+                errorEl.textContent = msg;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        // Clear error on input
+        document.querySelectorAll('.float-input').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('error');
+                const err = input.parentElement.querySelector('.error-msg');
+                if(err) err.classList.add('hidden');
+            });
+        });
+
+        document.getElementById('consent').addEventListener('change', (e) => {
+            if(e.target.checked) document.getElementById('consent-error').classList.add('hidden');
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            let isValid = true;
+
+            // Simple Client-side validation
+            const fullname = document.getElementById('fullname').value.trim();
+            const company = document.getElementById('company').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const industry = document.getElementById('industry').value;
+            const frequency = document.getElementById('frequency').value;
+            const specs = document.getElementById('specs').value.trim();
+            const consent = document.getElementById('consent').checked;
+
+            if(!fullname) { showError('fullname', 'Nama Lengkap wajib diisi'); isValid = false; }
+            if(!company) { showError('company', 'Nama Perusahaan wajib diisi'); isValid = false; }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!email || !emailRegex.test(email)) { showError('email', 'Format email tidak valid'); isValid = false; }
+            
+            const phoneRegex = /^[0-9+\-\s()]+$/;
+            if(!whatsapp || !phoneRegex.test(whatsapp)) { showError('whatsapp', 'Format nomor tidak valid'); isValid = false; }
+            
+            if(!industry) { showError('industry', 'Pilih kategori industri'); isValid = false; }
+            if(!frequency) { showError('frequency', 'Pilih frekuensi suplai'); isValid = false; }
+            if(!specs) { showError('specs', 'Spesifikasi wajib diisi'); isValid = false; }
+            
+            if(!consent) {
+                document.getElementById('consent-error').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if(isValid) {
+                // Processing State
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 spinner mr-2"></i> Memproses Enkripsi...';
+                lucide.createIcons();
+
+                // Simulate Network Request
+                setTimeout(() => {
+                    // Success State
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Kirim Request Quotation</span><i data-lucide="send" class="w-5 h-5 ml-2"></i>';
+                    lucide.createIcons();
+                    
+                    showToast('success', 'Berhasil Dikirim', 'Request Quotation Anda telah kami terima. Tim kami akan menghubungi Anda segera.');
+                    form.reset();
+                }, 2000); // 2 second delay simulation
+            } else {
+                showToast('error', 'Validasi Gagal', 'Mohon periksa kembali isian formulir Anda.');
+            }
+        });
+
+        // Volume Calculator
+        const volSlider = document.getElementById('vol-slider');
+        const volDisplay = document.getElementById('vol-display');
+        const tiers = [document.getElementById('tier-1'), document.getElementById('tier-2'), document.getElementById('tier-3')];
+
+        function updateCalc() {
+            const val = parseInt(volSlider.value);
+            volDisplay.textContent = val.toLocaleString('id-ID') + ' Kg';
+
+            // Update slider background gradient
+            const pct = ((val - 50) / (5000 - 50)) * 100;
+            volSlider.style.background = `linear-gradient(to right, #F2994A 0%, #F2994A ${pct}%, ${document.documentElement.classList.contains('dark') ? '#2D3B2A' : '#E5E7EB'} ${pct}%, ${document.documentElement.classList.contains('dark') ? '#2D3B2A' : '#E5E7EB'} 100%)`;
+
+            // Highlight active tier
+            tiers.forEach(t => { t.classList.remove('active'); t.style.borderColor = ''; t.style.background = ''; });
+            if (val < 500) {
+                tiers[0].classList.add('active');
+                tiers[0].style.borderColor = '#F2994A';
+                tiers[0].style.background = 'rgba(242,153,74,0.08)';
+            } else if (val <= 2000) {
+                tiers[1].classList.add('active');
+                tiers[1].style.borderColor = '#F2994A';
+                tiers[1].style.background = 'rgba(242,153,74,0.08)';
+            } else {
+                tiers[2].classList.add('active');
+                tiers[2].style.borderColor = '#F2994A';
+                tiers[2].style.background = 'rgba(242,153,74,0.08)';
+            }
+        }
+
+        volSlider.addEventListener('input', updateCalc);
+        updateCalc();
+    </script>
+</body>
+</html>

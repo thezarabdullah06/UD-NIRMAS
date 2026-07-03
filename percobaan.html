@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UD NIMARS — Mitra Segar Premium B2B</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              green: '#2D5A27',
+              dark: '#0e2a0b',
+              orange: '#F2994A',
+              light: '#F9FAFB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       01. RESET & BASE TYPOGRAPHY
+       ========================================================================== */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    *::before {
+      box-sizing: border-box;
+    }
+    
+    *::after {
+      box-sizing: border-box;
+    }
+    
+    html { 
+      scroll-behavior: auto; 
+      font-size: 16px;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #333333;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      cursor: none; /* Menyembunyikan kursor asli untuk digantikan kursor kustom */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Dark Mode Global Styles */
+    body.dark {
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', sans-serif;
+      margin-top: 0;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* ==========================================================================
+       02. CUSTOM CURSOR SYSTEM
+       ========================================================================== */
+    #cursor-dot {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 8px; 
+      height: 8px;
+      background: #2D5A27;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    
+    #cursor-outline {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 40px; 
+      height: 40px;
+      border: 1.5px solid #2D5A27;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+      mix-blend-mode: difference;
+    }
+    
+    body:hover #cursor-dot { 
+      opacity: 1; 
+    }
+    
+    /* Cursor Hover States for interactable elements */
+    .hover-target:hover ~ #cursor-outline,
+    a:hover ~ #cursor-outline,
+    button:hover ~ #cursor-outline { 
+      width: 70px; 
+      height: 70px; 
+      background: rgba(255,255,255,0.1);
+      border-color: #F2994A;
+    }
+    
+    /* Kursor di Mode Gelap */
+    body.dark #cursor-dot {
+      background: #ffffff;
+    }
+    
+    body.dark #cursor-outline {
+      border-color: #ffffff;
+    }
+
+    /* ==========================================================================
+       03. FLOATING HEADER (CENTERED LOGO, NO TEXT)
+       ========================================================================== */
+    #floating-header {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: 95%;
+      max-width: 1400px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #floating-header.scrolled {
+      top: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 40px rgba(45, 90, 39, 0.15);
+      border: 1px solid rgba(45, 90, 39, 0.1);
+      padding: 14px 24px;
+    }
+    
+    body.dark #floating-header.scrolled {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Bagian Kiri: Dark Mode + Navigasi Kiri */
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex: 1;
+      justify-content: flex-start;
+    }
+
+    /* Bagian Tengah: HANYA LOGO SVG (Posisi Absolut) */
+    .header-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Bagian Kanan: Navigasi Kanan + Language Switcher */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    /* Modifikasi Kontainer Navigasi */
+    .nav-links-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Logo Container (Tanpa Teks) */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: none;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-container:hover {
+      transform: scale(1.15);
+    }
+
+    /* Tombol Dark Mode di Pojok Kiri */
+    .theme-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #ffffff;
+      cursor: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #floating-header.scrolled .theme-toggle-btn {
+      color: #2D5A27;
+      background: rgba(45,90,39,0.05);
+      border-color: rgba(45,90,39,0.15);
+      box-shadow: none;
+    }
+    
+    body.dark #floating-header.scrolled .theme-toggle-btn {
+      color: #F2994A;
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    .theme-toggle-btn:hover {
+      background: #F2994A;
+      color: #ffffff !important;
+      border-color: #F2994A !important;
+      transform: rotate(20deg) scale(1.05);
+    }
+
+    /* Tautan Navigasi (Nav Links) */
+    .nav-link {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      position: relative;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+      cursor: none;
+    }
+
+    #floating-header.scrolled .nav-link {
+      color: #0e2a0b;
+    }
+    
+    body.dark #floating-header.scrolled .nav-link {
+      color: #ffffff;
+    }
+
+    /* Garis Bawah Animasi pada Nav Link */
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; 
+      left: 50%;
+      width: 0; 
+      height: 2px;
+      background: #F2994A;
+      transform: translateX(-50%);
+      transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::after { 
+      width: 100%; 
+    }
+    
+    .nav-link:hover { 
+      color: #F2994A !important; 
+    }
+
+    /* ==========================================================================
+       04. LANGUAGE SWITCHER (DI POJOK KANAN)
+       ========================================================================== */
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      background: rgba(0,0,0,0.25);
+      border-radius: 50px;
+      padding: 5px;
+      cursor: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
+    
+    #floating-header.scrolled .lang-switch {
+      background: rgba(45,90,39,0.08);
+      border-color: rgba(45,90,39,0.15);
+    }
+    
+    body.dark #floating-header.scrolled .lang-switch {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .lang-btn {
+      padding: 8px 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border-radius: 50px;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    #floating-header.scrolled .lang-btn {
+      color: #2D5A27;
+    }
+    
+    body.dark #floating-header.scrolled .lang-btn {
+      color: #ffffff;
+    }
+
+    .lang-btn.active {
+      background: #F2994A;
+      color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(242,153,74,0.4);
+    }
+
+    /* ==========================================================================
+       05. HERO SECTION & MESH GRADIENT
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding-top: 100px;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: -10%;
+      background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=2000&q=85') center/cover no-repeat;
+      transform-origin: center;
+      will-change: transform;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(14,42,11,0.92) 0%, rgba(14,42,11,0.7) 50%, rgba(45,90,39,0.5) 100%);
+      transition: background 0.5s ease;
+    }
+    
+    body.dark .hero-overlay {
+      background: linear-gradient(135deg, rgba(2,6,23,0.95) 0%, rgba(15,23,42,0.85) 50%, rgba(2,6,23,0.7) 100%);
+    }
+
+    .mesh-gradient {
+      position: relative;
+      background: #0e2a0b;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+    
+    body.dark .mesh-gradient {
+      background: #020617;
+    }
+    
+    .mesh-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(45,90,39,0.6) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(242,153,74,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 20%, rgba(45,90,39,0.3) 0%, transparent 55%);
+      animation: meshMove 20s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    
+    @keyframes meshMove {
+      0%   { background-position: 0% 0%; transform: scale(1); }
+      50%  { background-position: 50% 50%; transform: scale(1.1); }
+      100% { background-position: 100% 100%; transform: scale(1); }
+    }
+
+    /* ==========================================================================
+       06. GLOBAL COMPONENTS (BUTTONS, CARDS, LABELS)
+       ========================================================================== */
+    .elastic-btn {
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: none;
+    }
+    
+    .elastic-btn:active { 
+      transform: scale(0.92) !important; 
+    }
+    
+    .elastic-btn:hover { 
+      transform: scale(1.05); 
+    }
+
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #F2994A;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: #F2994A;
+      border-radius: 2px;
+    }
+    
+    .section-label::after {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: #F2994A;
+      border-radius: 2px;
+    }
+
+    .tilt-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+    }
+    
+    .tilt-card:hover { 
+      box-shadow: 0 35px 70px rgba(45,90,39,0.15); 
+      transform: translateY(-12px) scale(1.01);
+    }
+    
+    body.dark .tilt-card:hover {
+      box-shadow: 0 35px 70px rgba(0,0,0,0.6); 
+    }
+    
+    .card-inner {
+      transform: translateZ(30px);
+    }
+
+    /* Highlight Box CSR Data Terukur */
+    .highlight-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 2rem;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    body.dark .highlight-box {
+      background: rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.05);
+    }
+    
+    .highlight-box:hover {
+      transform: translateY(-10px);
+      background: rgba(255,255,255,0.08);
+      border-color: #F2994A;
+      box-shadow: 0 20px 40px rgba(242,153,74,0.15);
+    }
+
+    /* ==========================================================================
+       07. MARQUEE SYSTEM (PORTOFOLIO)
+       ========================================================================== */
+    .marquee-wrapper {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+    
+    .marquee-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+      animation: marqueeScroll 45s linear infinite;
+    }
+    
+    .marquee-track.reverse {
+      animation-direction: reverse;
+      animation-duration: 50s;
+    }
+    
+    .marquee-track:hover { 
+      animation-play-state: paused; 
+    }
+    
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .testi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 2.5rem;
+      min-width: 420px;
+      max-width: 460px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      flex-shrink: 0;
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    
+    .testi-card:hover {
+      transform: translateY(-10px);
+      border-color: #F2994A;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    /* ==========================================================================
+       08. ACCORDION FAQ SYSTEM
+       ========================================================================== */
+    .faq-container {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 1.8rem 0;
+      cursor: none;
+      transition: border-color 0.3s ease;
+    }
+    
+    body.dark .faq-item {
+      border-color: rgba(255,255,255,0.1);
+    }
+    
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #1a1a1a;
+      transition: color 0.3s ease;
+    }
+    
+    body.dark .faq-question {
+      color: #ffffff;
+    }
+    
+    .faq-question:hover {
+      color: #F2994A;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s ease;
+      font-size: 1.05rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    
+    body.dark .faq-answer {
+      color: #a1a1aa;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 400px;
+      margin-top: 1.2rem;
+    }
+    
+    .faq-icon {
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #2D5A27;
+    }
+    
+    body.dark .faq-icon {
+      color: #F2994A;
+    }
+    
+    .faq-item.active .faq-icon {
+      transform: rotate(135deg);
+    }
+
+    /* ==========================================================================
+       09. FORM STYLES & INPUTS
+       ========================================================================== */
+    .float-group {
+      position: relative;
+      margin-bottom: 2.2rem;
+    }
+    
+    .float-group input,
+    .float-group textarea,
+    .float-group select {
+      width: 100%;
+      padding: 1.4rem 1.2rem 0.6rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      background: #f9fafb;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      color: #1f2937;
+      outline: none;
+      transition: all 0.3s ease;
+      appearance: none;
+    }
+    
+    body.dark .float-group input,
+    body.dark .float-group textarea,
+    body.dark .float-group select {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    
+    .float-group input:focus,
+    .float-group textarea:focus,
+    .float-group select:focus { 
+      border-color: #2D5A27; 
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(45,90,39,0.1);
+    }
+    
+    body.dark .float-group input:focus,
+    body.dark .float-group textarea:focus,
+    body.dark .float-group select:focus {
+      border-color: #F2994A;
+      background: #0f172a;
+      box-shadow: 0 0 0 4px rgba(242,153,74,0.15);
+    }
+    
+    .float-group label {
+      position: absolute;
+      left: 1.2rem;
+      top: 1.2rem;
+      font-size: 1.05rem;
+      color: #9ca3af;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: transparent;
+      font-weight: 500;
+    }
+    
+    .float-group input:focus ~ label,
+    .float-group input:not(:placeholder-shown) ~ label,
+    .float-group textarea:focus ~ label,
+    .float-group textarea:not(:placeholder-shown) ~ label,
+    .float-group select:focus ~ label,
+    .float-group select:not([value=""]) ~ label {
+      top: -0.7rem;
+      left: 1rem;
+      font-size: 0.8rem;
+      color: #2D5A27;
+      font-weight: 700;
+      background: #ffffff;
+      padding: 0 0.5rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+    
+    body.dark .float-group input:focus ~ label,
+    body.dark .float-group input:not(:placeholder-shown) ~ label,
+    body.dark .float-group textarea:focus ~ label,
+    body.dark .float-group textarea:not(:placeholder-shown) ~ label,
+    body.dark .float-group select:focus ~ label,
+    body.dark .float-group select:not([value=""]) ~ label {
+      background: #0f172a;
+      color: #F2994A;
+    }
+
+    /* ==========================================================================
+       10. ANIMATION UTILITIES & SCROLLBAR
+       ========================================================================== */
+    .reveal { 
+      opacity: 0; 
+      transform: translateY(70px); 
+    }
+    
+    .float-el { 
+      animation: floatEl 7s ease-in-out infinite; 
+    }
+    
+    .float-el.delay-1 { 
+      animation-delay: -2s; 
+      animation-duration: 8s; 
+    }
+    
+    .float-el.delay-2 { 
+      animation-delay: -4s; 
+      animation-duration: 9s; 
+    }
+    
+    @keyframes floatEl {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-18px) rotate(5deg); }
+      66% { transform: translateY(10px) rotate(-4deg); }
+    }
+
+    #scroll-progress {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #2D5A27, #F2994A);
+      z-index: 99997;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    ::-webkit-scrollbar { 
+      width: 10px; 
+    }
+    
+    ::-webkit-scrollbar-track { 
+      background: #f3f4f6; 
+    }
+    
+    body.dark ::-webkit-scrollbar-track { 
+      background: #0f172a; 
+    }
+    
+    ::-webkit-scrollbar-thumb { 
+      background: #2D5A27; 
+      border-radius: 10px; 
+    }
+    
+    body.dark ::-webkit-scrollbar-thumb { 
+      background: #F2994A; 
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #1A3317;
+    }
+
+    /* ==========================================================================
+       11. RESPONSIVE MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      #floating-header {
+        width: 95%;
+        padding: 10px 20px;
+      }
+      
+      .hidden-mobile {
+        display: none !important;
+      }
+      
+      .header-left {
+        min-width: auto;
+      }
+      
+      .header-right {
+        min-width: auto;
+        gap: 1rem;
+      }
+      
+      .mobile-menu-btn { 
+        display: flex !important; 
+      }
+      
+      .logo-container svg {
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body class="transition-colors duration-500">
+
+<div id="scroll-progress"></div>
+
+<div id="cursor-dot"></div>
+<div id="cursor-outline"></div>
+
+<nav id="floating-header">
+  
+  <div class="header-left">
+    <button id="theme-btn" class="theme-toggle-btn" title="Toggle Dark Mode">
+      <svg class="sun-icon hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+    
+    <div class="nav-links-container hidden-mobile">
+      <a href="#hero" class="nav-link" data-i18n="nav-home">Home</a>
+      <a href="#about" class="nav-link" data-i18n="nav-about">Tentang Kami</a>
+      <a href="#produk" class="nav-link" data-i18n="nav-product">Produk</a>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <a href="#hero" class="logo-container" title="Beranda UD NIMARS">
+      <svg width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5C25.147 5 5 25.147 5 50C5 74.853 25.147 95 50 95C74.853 95 95 74.853 95 50C95 25.147 74.853 5 50 5Z" fill="#2D5A27"/>
+        <path d="M95 50C95 25.147 74.853 5 50 5V95C74.853 95 95 74.853 95 50Z" fill="#1A3317"/>
+        <path d="M50 85V40" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M50 65C35 65 25 50 25 50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M50 55C65 55 75 40 75 40" stroke="#F2994A" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="50" cy="25" r="8" fill="#F2994A"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="header-right">
+    <div class="nav-links-container hidden-mobile">
+      <a href="#portfolio" class="nav-link" data-i18n="nav-portfolio">Portofolio</a>
+      <a href="#csr" class="nav-link" data-i18n="nav-csr">CSR</a>
+      <a href="#contact" class="nav-link" data-i18n="nav-contact">Kontak Kami</a>
+    </div>
+    
+    <div class="lang-switch">
+      <div class="lang-btn active" id="btn-id" onclick="switchLanguage('id')">ID</div>
+      <div class="lang-btn" id="btn-en" onclick="switchLanguage('en')">EN</div>
+    </div>
+    
+    <button class="mobile-menu-btn hidden items-center justify-center p-2 text-white" id="menu-toggle" style="cursor:none;">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu" class="fixed inset-0 bg-brand-dark/95 z-50 hidden flex-col items-center justify-center gap-8 backdrop-blur-2xl">
+  <a href="#hero" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-home">Home</a>
+  <a href="#about" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-about">Tentang Kami</a>
+  <a href="#produk" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-product">Produk</a>
+  <a href="#portfolio" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-portfolio">Portofolio</a>
+  <a href="#csr" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-csr">CSR</a>
+  <a href="#contact" class="text-white text-3xl font-display font-black hover:text-brand-orange transition-colors" data-i18n="nav-contact">Kontak Kami</a>
+  
+  <button id="close-mobile" class="mt-10 p-4 text-white/50 hover:text-brand-orange bg-white/5 rounded-full border border-white/10">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</div>
+
+<section id="hero" class="hero-section text-center">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="float-el absolute top-1/4 right-1/4 opacity-30 text-brand-orange">
+    <svg width="120" height="120" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="12 12"/>
+    </svg>
+  </div>
+  <div class="float-el delay-1 absolute bottom-1/3 left-1/4 opacity-20 text-white">
+    <svg width="90" height="90" viewBox="0 0 80 80">
+      <rect x="5" y="5" width="70" height="70" rx="15" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="10 10"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6">
+    <div class="section-label mb-8 reveal justify-center" data-i18n="hero-label">
+      Premium B2B Fresh Partner
+    </div>
+
+    <h1 id="hero-h1" class="mb-8 font-display font-black text-white leading-tight drop-shadow-2xl" style="font-size:clamp(3rem, 6vw, 5rem);">
+      <span data-i18n="hero-h1-1">Hadirkan Kesegaran</span><br/>
+      <span class="text-brand-orange" data-i18n="hero-h1-2">Alam</span> <span data-i18n="hero-h1-3">pada Standar</span><br/>
+      <span data-i18n="hero-h1-4">Tertinggi.</span>
+    </h1>
+
+    <p id="hero-body" class="mb-14 reveal text-white/80 mx-auto text-lg md:text-2xl font-light leading-relaxed max-w-3xl" data-i18n="hero-desc">
+      UD NIMARS adalah tulang punggung rantai pasok industri kuliner. Kami mengorkestrasi distribusi komoditas segar berkualitas premium—langsung dari ladang ke fasilitas bisnis Anda, dengan jaminan presisi waktu dan kesegaran paripurna.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal">
+      <a href="#produk" class="elastic-btn px-10 py-5 rounded-full text-white font-bold bg-brand-green shadow-[0_15px_40px_rgba(45,90,39,0.5)] text-lg border border-brand-green hover:bg-green-700">
+        <span data-i18n="btn-explore">Eksplorasi Produk</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#contact" class="elastic-btn px-10 py-5 rounded-full text-white font-bold border-2 border-white/40 backdrop-blur-md hover:bg-white/15 hover:border-white text-lg">
+        <span data-i18n="btn-contact">Minta Penawaran Spesial</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 pt-12 border-t border-white/20 max-w-4xl mx-auto reveal">
+      <div>
+        <div class="font-display font-black text-5xl text-brand-orange mb-3">500+</div>
+        <div class="text-sm font-semibold text-white/70 tracking-widest uppercase" data-i18n="stat-farmers">Petani Mitra</div>
+      </div>
+      <div>
+        <div class="font-display font-black text-5xl text-brand-orange mb-3">10K+</div>
+        <div class="text-sm font-semibold text-white/70 tracking-widest uppercase" data-i18n="stat-tonnage">Ton / Tahun</div>
+      </div>
+      <div>
+        <div class="font-display font-black text-5xl text-brand-orange mb-3">99.8%</div>
+        <div class="text-sm font-semibold text-white/70 tracking-widest uppercase" data-i18n="stat-sla">SLA Terpenuhi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-32 relative bg-white dark:bg-slate-900 transition-colors duration-500">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+      
+      <div>
+        <div class="section-label mb-6 reveal" data-i18n="about-label">Tentang UD NIMARS</div>
+        <h2 class="font-display font-black text-brand-dark dark:text-white leading-tight mb-10 reveal" style="font-size:clamp(2.2rem, 4vw, 3.5rem);" data-i18n="about-h2">
+          Lebih dari Sekadar Pemasok. Kami adalah Ekosistem.
+        </h2>
+        
+        <div class="space-y-8 text-gray-600 dark:text-gray-400 text-lg leading-relaxed reveal">
+          <p data-i18n="about-p1">
+            Didirikan dengan visi untuk memodernisasi tata niaga agrikultur, UD NIMARS menjembatani kesenjangan antara hasil bumi berkualitas tinggi dengan kebutuhan standar eksak dari industri perhotelan, restoran, dan katering (HORECA).
+          </p>
+          <p data-i18n="about-p2">
+            Kami menerapkan metode <strong>Farm-to-Table</strong> yang telah disempurnakan. Proses kami tidak dimulai saat panen, melainkan sejak pemilihan bibit dan edukasi agronomi kepada mitra petani kami. Hal ini memastikan bahwa setiap komoditas yang dilabeli 'NIMARS Premium' benar-benar memenuhi spesifikasi ketat Anda.
+          </p>
+          <p data-i18n="about-p3">
+            Infrastruktur *cold-chain* kami dirancang khusus untuk meminimalkan penyusutan fisik dan memastikan setiap daun, buah, dan umbi yang tiba di dapur Anda memiliki umur simpan yang maksimal.
+          </p>
+        </div>
+        </div>
+
+      <div class="grid grid-cols-2 gap-6 reveal">
+        <div class="tilt-card rounded-3xl overflow-hidden h-72 mt-16 shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1622621746668-59fb299bc4d7?w=800&q=80" class="w-full h-full object-cover" alt="Farm Inspection">
+        </div>
+        <div class="tilt-card rounded-3xl overflow-hidden h-96 shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1571197119669-e9e97e7e54bd?w=800&q=80" class="w-full h-full object-cover" alt="Professional Kitchen">
+        </div>
+        <div class="col-span-2 tilt-card rounded-3xl bg-brand-dark dark:bg-black p-10 text-white flex items-center justify-between shadow-2xl border border-transparent dark:border-white/10">
+          <div>
+            <div class="text-brand-orange font-bold text-sm tracking-widest uppercase mb-3" data-i18n="about-cert">Sertifikasi Internal</div>
+            <div class="font-display font-black text-3xl">100% Quality Audited</div>
+          </div>
+          <div class="w-16 h-16 rounded-full bg-brand-orange/20 flex items-center justify-center border border-brand-orange/30">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="produk" class="py-32 bg-brand-light dark:bg-slate-800 transition-colors duration-500 relative">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-24">
+      <div class="section-label mb-6 reveal" data-i18n="prod-label">Katalog Komoditas Eksklusif</div>
+      <h2 class="font-display font-black text-brand-dark dark:text-white leading-tight reveal mb-6" style="font-size:clamp(2.2rem, 4vw, 3.5rem);" data-i18n="prod-h2">
+        Kategori Produk Unggulan Kami
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-xl reveal leading-relaxed" data-i18n="prod-desc">
+        Semua produk disortir secara manual menggunakan standar parameter B2B Internasional yang mencakup ukuran, kecerahan warna, tingkat kematangan optimum, dan kebersihan fisik.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      
+      <div class="tilt-card bg-white dark:bg-slate-900 p-12 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-slate-700 reveal flex flex-col h-full relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 opacity-5 dark:opacity-10 pointer-events-none">
+           <svg width="300" height="300" viewBox="0 0 24 24" fill="currentColor">
+             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+           </svg>
+        </div>
+        
+        <div class="card-inner flex flex-col h-full relative z-10">
+          <div class="w-28 h-28 rounded-[2rem] bg-green-50 dark:bg-brand-green/20 flex items-center justify-center mb-10 border border-green-100 dark:border-brand-green/30 shadow-inner">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2D5A27" class="dark:stroke-brand-orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22v-7l-2-2"/><path d="M12 15l2-2"/><path d="M8 8c0 4 4 7 4 7s4-3 4-7a4 4 0 0 0-8 0z"/><path d="M3 13c0 4 4 6 4 6s2-2 2-6a3 3 0 0 0-6 0z"/><path d="M21 13c0 4-4 6-4 6s-2-2-2-6a3 3 0 0 1 6 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-black text-4xl mb-6 text-brand-dark dark:text-white tracking-tight" data-i18n="prod-1-title">Sayuran Premium</h3>
+          <p class="text-gray-500 dark:text-gray-400 text-lg mb-10 flex-grow leading-relaxed" data-i18n="prod-1-desc">
+            Selada hidroponik, sayuran daun hijau, umbi-umbian, dan bumbu dapur aromatik segar. Kami menjamin tingkat kerenyahan maksimal dengan penyortiran yang membuang 100% defect visual sebelum dikirim ke dapur Anda.
+          </p>
+          
+          <div class="mt-auto border-t border-gray-100 dark:border-slate-700 pt-8 flex items-center justify-between">
+            <div class="text-brand-orange font-bold text-base tracking-widest uppercase bg-orange-50 dark:bg-brand-orange/10 px-4 py-2 rounded-full border border-orange-100 dark:border-brand-orange/20" data-i18n="prod-moq-1">MOQ: 50 Kg</div>
+            <button class="w-14 h-14 rounded-full bg-brand-green dark:bg-brand-orange text-white flex items-center justify-center hover:scale-110 transition-transform cursor-none">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tilt-card bg-white dark:bg-slate-900 p-12 rounded-[3rem] shadow-2xl border border-gray-100 dark:border-slate-700 reveal flex flex-col h-full relative overflow-hidden" style="transition-delay:0.15s;">
+        <div class="absolute -right-16 -top-16 opacity-5 dark:opacity-10 pointer-events-none">
+           <svg width="300" height="300" viewBox="0 0 24 24" fill="currentColor">
+             <circle cx="12" cy="12" r="10"/>
+           </svg>
+        </div>
+
+        <div class="card-inner flex flex-col h-full relative z-10">
+          <div class="w-28 h-28 rounded-[2rem] bg-orange-50 dark:bg-brand-orange/20 flex items-center justify-center mb-10 border border-orange-100 dark:border-brand-orange/30 shadow-inner">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#F2994A" class="dark:stroke-brand-orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z"/>
+              <path d="M12 2v4"/>
+              <path d="M12 6a4 4 0 0 0 4 4"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-black text-4xl mb-6 text-brand-dark dark:text-white tracking-tight" data-i18n="prod-2-title">Buah Tropis & Eksotis</h3>
+          <p class="text-gray-500 dark:text-gray-400 text-lg mb-10 flex-grow leading-relaxed" data-i18n="prod-2-desc">
+            Melon grade A, mangga standar ekspor, alpukat mentega, dan buah tropis pilihan lainnya. Tingkat brix (kemanisan) dan fase kematangan dikurasi secara manual secara presisi untuk memenuhi standar *banquet* hotel bintang lima.
+          </p>
+          
+          <div class="mt-auto border-t border-gray-100 dark:border-slate-700 pt-8 flex items-center justify-between">
+            <div class="text-brand-orange font-bold text-base tracking-widest uppercase bg-orange-50 dark:bg-brand-orange/10 px-4 py-2 rounded-full border border-orange-100 dark:border-brand-orange/20" data-i18n="prod-moq-2">MOQ: 100 Kg</div>
+            <button class="w-14 h-14 rounded-full bg-brand-green dark:bg-brand-orange text-white flex items-center justify-center hover:scale-110 transition-transform cursor-none">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="values" class="py-32 relative bg-brand-dark dark:bg-black text-white overflow-hidden transition-colors duration-500">
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 50px 50px;"></div>
+  
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+      <div class="reveal">
+        <h2 class="font-display font-black leading-tight mb-8 text-white" style="font-size:clamp(2.5rem, 4vw, 3.5rem);" data-i18n="values-h2">
+          Mengapa <span class="text-brand-orange">UD NIMARS</span> Menjadi Pilihan Utama?
+        </h2>
+        <p class="text-white/70 text-xl leading-relaxed mb-10" data-i18n="values-desc">
+          Dalam industri logistik di mana waktu rotasi dan konsistensi adalah segalanya, kami menolak untuk mengambil jalan pintas. Setiap pilar operasional kami dibangun untuk melindungi efisiensi dan reputasi dapur Anda.
+        </p>
+      </div>
+
+      <div class="grid gap-8">
+        <div class="bg-white/5 backdrop-blur-xl p-10 rounded-[2rem] border border-white/10 reveal tilt-card">
+          <div class="flex items-center gap-6 mb-5">
+            <div class="w-14 h-14 bg-brand-orange rounded-full flex items-center justify-center text-2xl font-black shadow-[0_0_20px_rgba(242,153,74,0.4)]">1</div>
+            <h3 class="font-display font-bold text-2xl" data-i18n="val-1-title">Traceability (Keterlacakan)</h3>
+          </div>
+          <p class="text-white/70 text-lg leading-relaxed" data-i18n="val-1-desc">Setiap batch pengiriman dapat dilacak kembali secara transparan ke lahan tanam asalnya, memastikan standar keamanan pangan (food safety) 100%.</p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl p-10 rounded-[2rem] border border-white/10 reveal tilt-card" style="transition-delay:0.15s;">
+          <div class="flex items-center gap-6 mb-5">
+            <div class="w-14 h-14 bg-brand-orange rounded-full flex items-center justify-center text-2xl font-black shadow-[0_0_20px_rgba(242,153,74,0.4)]">2</div>
+            <h3 class="font-display font-bold text-2xl" data-i18n="val-2-title">Fixed Pricing Agreement</h3>
+          </div>
+          <p class="text-white/70 text-lg leading-relaxed" data-i18n="val-2-desc">Melindungi HPP (Harga Pokok Penjualan) bisnis Anda dari fluktuasi harga pasar yang ekstrem melalui sistem kontrak harga terkunci secara absolut.</p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl p-10 rounded-[2rem] border border-white/10 reveal tilt-card" style="transition-delay:0.3s;">
+          <div class="flex items-center gap-6 mb-5">
+            <div class="w-14 h-14 bg-brand-orange rounded-full flex items-center justify-center text-2xl font-black shadow-[0_0_20px_rgba(242,153,74,0.4)]">3</div>
+            <h3 class="font-display font-bold text-2xl" data-i18n="val-3-title">Replacement Guarantee</h3>
+          </div>
+          <p class="text-white/70 text-lg leading-relaxed" data-i18n="val-3-desc">Menemukan defect fisik saat proses receiving? Kami memproses penggantian barang (retur) secara otomatis di pengiriman H+1 tanpa prosedur berbelit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio" class="mesh-gradient py-32 transition-colors duration-500">
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-24">
+      <div class="section-label mb-6 reveal text-brand-orange" data-i18n="port-label">Kemitraan Terpercaya</div>
+      <h2 class="font-display font-black text-white leading-tight reveal mb-6" style="font-size:clamp(2.2rem, 4vw, 3.5rem);" data-i18n="port-h2">
+        Dipercaya oleh Eksekutif Industri
+      </h2>
+    </div>
+
+    <div class="marquee-wrapper mb-24 reveal">
+      <div class="marquee-track">
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Hilton Group
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+          Ismaya Group
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="3" ry="3"/></svg>
+          Ranch Market
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Alila Hotels
+        </div>
+        
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Hilton Group
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+          Ismaya Group
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="3" ry="3"/></svg>
+          Ranch Market
+        </div>
+        <div class="px-10 py-6 rounded-[2rem] bg-white/10 backdrop-blur-lg border border-white/20 text-white font-display font-bold text-2xl flex items-center gap-5 shadow-2xl">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F2994A" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Alila Hotels
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrapper reveal">
+      <div class="marquee-track reverse">
+        
+        <div class="testi-card tilt-card">
+          <div class="flex mb-8 text-brand-orange">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-white/90 text-xl mb-10 leading-relaxed" data-i18n="testi-1-text">
+            "Kualitas sayuran organik selalu memuaskan. Presisi pengiriman harian mereka benar-benar menyelamatkan cost inventory F&B kami setiap minggunya."
+          </p>
+          <div class="flex items-center gap-5 border-t border-white/10 pt-6">
+            <div class="w-14 h-14 rounded-full bg-brand-orange text-white flex items-center justify-center font-black text-lg">AS</div>
+            <div>
+              <div class="font-display font-bold text-white text-lg">Chef Arief Santoso</div>
+              <div class="text-xs text-white/50 tracking-widest mt-1">EXECUTIVE CHEF</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card tilt-card">
+          <div class="flex mb-8 text-brand-orange">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-white/90 text-xl mb-10 leading-relaxed" data-i18n="testi-2-text">
+            "Sistem cold-chain NIMARS juara. Umur simpan buah-buahan potong di etalase supermarket kami meningkat pesat sejak bermitra."
+          </p>
+          <div class="flex items-center gap-5 border-t border-white/10 pt-6">
+            <div class="w-14 h-14 rounded-full bg-brand-green text-white flex items-center justify-center font-black text-lg border border-white/20">DM</div>
+            <div>
+              <div class="font-display font-bold text-white text-lg">Dewi Maharani</div>
+              <div class="text-xs text-white/50 tracking-widest mt-1">PROCUREMENT MGR</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testi-card tilt-card">
+          <div class="flex mb-8 text-brand-orange">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <p class="text-white/90 text-xl mb-10 leading-relaxed" data-i18n="testi-1-text">
+            "Kualitas sayuran organik selalu memuaskan. Presisi pengiriman harian mereka benar-benar menyelamatkan cost inventory F&B kami setiap minggunya."
+          </p>
+          <div class="flex items-center gap-5 border-t border-white/10 pt-6">
+            <div class="w-14 h-14 rounded-full bg-brand-orange text-white flex items-center justify-center font-black text-lg">AS</div>
+            <div>
+              <div class="font-display font-bold text-white text-lg">Chef Arief Santoso</div>
+              <div class="text-xs text-white/50 tracking-widest mt-1">EXECUTIVE CHEF</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="csr" class="py-32 relative bg-white dark:bg-slate-900 transition-colors duration-500">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="section-label mb-6 reveal" data-i18n="csr-label">Sustainabilitas</div>
+      <h2 class="font-display font-black text-brand-dark dark:text-white leading-tight reveal mb-8" style="font-size:clamp(2.2rem, 4vw, 3.5rem);" data-i18n="csr-h2">
+        Memberdayakan Alam & Komunitas
+      </h2>
+    </div>
+
+    <div class="mt-10 mb-24 reveal">
+      <div class="text-center mb-12">
+        <h3 class="font-display font-bold text-3xl mb-4 text-brand-dark dark:text-white" data-i18n="csr-data-title">Dampak Nyata Komitmen Kami (Data Terukur)</h3>
+        <p class="text-gray-600 dark:text-gray-400 text-lg" data-i18n="csr-data-desc">Kemitraan Anda dengan UD NIMARS adalah langkah nyata untuk perubahan ekosistem. Metrik Capaian Data Kami (Per 2026):</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="highlight-box bg-white dark:bg-slate-800 shadow-xl dark:shadow-2xl border border-gray-100 dark:border-slate-700">
+          <div class="font-display font-black text-5xl text-brand-orange mb-4">500+</div>
+          <h4 class="font-bold text-xl text-brand-dark dark:text-white mb-3" data-i18n="csr-m1-title">Mitra Petani Berdaya</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed" data-i18n="csr-m1-desc">Keluarga petani lokal yang tergabung dalam program *fair trade* kami.</p>
+        </div>
+        
+        <div class="highlight-box bg-white dark:bg-slate-800 shadow-xl dark:shadow-2xl border border-gray-100 dark:border-slate-700">
+          <div class="font-display font-black text-5xl text-brand-green dark:text-brand-orange mb-4">1.200+</div>
+          <h4 class="font-bold text-xl text-brand-dark dark:text-white mb-3" data-i18n="csr-m2-title">Lahan Tani Berkelanjutan</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed" data-i18n="csr-m2-desc">Hektar perkebunan yang dikelola secara ketat menggunakan standar organik.</p>
+        </div>
+
+        <div class="highlight-box bg-white dark:bg-slate-800 shadow-xl dark:shadow-2xl border border-gray-100 dark:border-slate-700">
+          <div class="font-display font-black text-5xl text-brand-orange mb-4">30%</div>
+          <h4 class="font-bold text-xl text-brand-dark dark:text-white mb-3" data-i18n="csr-m3-title">Pengurangan Limbah Pangan</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed" data-i18n="csr-m3-desc">Tingkat reduksi sampah pangan nasional melalui sistem logistik cerdas dan kompos.</p>
+        </div>
+
+        <div class="highlight-box bg-white dark:bg-slate-800 shadow-xl dark:shadow-2xl border border-gray-100 dark:border-slate-700">
+          <div class="font-display font-black text-5xl text-brand-green dark:text-brand-orange mb-4">12+</div>
+          <h4 class="font-bold text-xl text-brand-dark dark:text-white mb-3" data-i18n="csr-m4-title">Edukasi Petani Intensif</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed" data-i18n="csr-m4-desc">Sesi pelatihan agronomi dan teknologi pertanian modern yang digelar per tahun.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="py-32 bg-gray-50 dark:bg-slate-950 transition-colors duration-500">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-20 reveal">
+      <div class="section-label mb-6" data-i18n="faq-label">Pusat Bantuan</div>
+      <h2 class="font-display font-black text-brand-dark dark:text-white leading-tight mb-6" style="font-size:clamp(2.2rem, 4vw, 3rem);" data-i18n="faq-h2">
+        Pertanyaan Seputar Kemitraan
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400 text-lg" data-i18n="faq-desc">Hal-hal operasional teknis yang sering ditanyakan oleh eksekutif tim Procurement sebelum memulai kerja sama resmi.</p>
+    </div>
+
+    <div class="faq-container reveal">
+      <div class="faq-item active" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span data-i18n="faq-1-q">Berapa Minimum Order Quantity (MOQ) untuk pesanan B2B?</span>
+          <svg class="faq-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div class="faq-answer" data-i18n="faq-1-a">
+          MOQ operasional bervariasi bergantung pada sifat komoditas. Secara umum, untuk zona pengiriman Jabodetabek, kami melayani MOQ mulai dari 50 Kg per pengiriman gabungan. Silakan hubungi tim account manager kami untuk merumuskan informasi detail yang sesuai dengan profil bisnis Anda.
+        </div>
+      </div>
+      
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span data-i18n="faq-2-q">Bagaimana mekanisme jika terdapat barang rusak atau reject saat diterima?</span>
+          <svg class="faq-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div class="faq-answer" data-i18n="faq-2-a">
+          Kualitas adalah harga mati. Kami memiliki kebijakan "Replacement Guarantee" tanpa debat. Jika tim receiving Anda menemukan produk yang tidak sesuai standar spesifikasi visual maupun organoleptik, kami akan langsung menggantinya secara gratis pada jadwal pengiriman terdekat berikutnya (H+1).
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span data-i18n="faq-3-q">Apakah UD NIMARS menyediakan skema Term of Payment (TOP) untuk hotel?</span>
+          <svg class="faq-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div class="faq-answer" data-i18n="faq-3-a">
+          Tentu. Kami mendesain skema pembayaran yang ramah untuk cashflow industri. Bagi klien korporasi dengan Purchase Agreement valid berdurasi minimum 6 bulan, kami sanggup memberikan fasilitas pembayaran mundur (TOP) mulai dari rentang 14 hingga maksimal 30 hari kerja (setelah invoice diterima).
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span data-i18n="faq-4-q">Bisakah menggunakan custom packaging untuk etalase Supermarket (Private Label)?</span>
+          <svg class="faq-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div class="faq-answer" data-i18n="faq-4-a">
+          Sangat bisa didiskusikan. UD NIMARS melayani layanan *co-packing* dan pelabelan khusus (termasuk penerapan shrink-wrap, mesh bag premium, atau penempelan stiker barcode merk Anda) menggunakan material food-grade bersertifikat, khusus diperuntukkan bagi jaringan klien retail premium kami.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="py-32 bg-brand-light dark:bg-slate-900 transition-colors duration-500 relative">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="bg-white dark:bg-slate-800 rounded-[3rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row reveal border border-gray-100 dark:border-slate-700">
+      
+      <div class="lg:w-2/5 bg-brand-dark p-12 lg:p-16 text-white relative overflow-hidden">
+        <div class="absolute -top-24 -left-24 opacity-10">
+          <svg width="400" height="400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5"><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        
+        <div class="relative z-10">
+          <h2 class="font-display font-black text-4xl lg:text-5xl mb-8" data-i18n="contact-h2">Mari Berdiskusi.</h2>
+          <p class="text-white/70 mb-14 text-xl leading-relaxed" data-i18n="contact-desc">Representatif kami akan segera merancang *quotation* yang paling efisien untuk menutupi volume bisnis Anda.</p>
+          
+          <div class="space-y-10">
+            <div>
+              <div class="text-brand-orange font-bold text-sm tracking-widest uppercase mb-3" data-i18n="contact-office">Head Office</div>
+              <p class="text-white/90 text-lg leading-relaxed">Kawasan Industri Agrikultur Terpadu<br>Jl. Raya Pangan No. 88, Bogor 16111</p>
+            </div>
+            <div>
+              <div class="text-brand-orange font-bold text-sm tracking-widest uppercase mb-3" data-i18n="contact-phone">Direct Line (B2B)</div>
+              <p class="text-white/90 text-2xl font-bold">+62 812 3456 7890</p>
+            </div>
+            <div>
+              <div class="text-brand-orange font-bold text-sm tracking-widest uppercase mb-3" data-i18n="contact-email">Corporate Email</div>
+              <p class="text-white/90 text-xl">partnership@udnimars.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:w-3/5 p-12 lg:p-16">
+        <form id="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="grid md:grid-cols-2 gap-x-8 gap-y-2">
+            <div class="float-group">
+              <input type="text" id="nama" placeholder=" " required />
+              <label for="nama" data-i18n="form-name">Nama Lengkap *</label>
+            </div>
+            <div class="float-group">
+              <input type="text" id="perusahaan" placeholder=" " required />
+              <label for="perusahaan" data-i18n="form-company">Nama Perusahaan *</label>
+            </div>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-x-8 gap-y-2">
+            <div class="float-group">
+              <input type="email" id="email" placeholder=" " required />
+              <label for="email" data-i18n="form-email">Email Korporat *</label>
+            </div>
+            <div class="float-group">
+              <input type="tel" id="telp" placeholder=" " required />
+              <label for="telp" data-i18n="form-phone">No. WhatsApp *</label>
+            </div>
+          </div>
+          
+          <div class="float-group mt-2">
+            <select id="layanan" required>
+              <option value="" disabled selected hidden></option>
+              <option value="hotel">Hotel & Resort</option>
+              <option value="resto">Jaringan Restoran (F&B)</option>
+              <option value="retail">Supermarket Retail</option>
+              <option value="other">Katering / Lainnya</option>
+            </select>
+            <label for="layanan" data-i18n="form-category">Kategori Industri Anda *</label>
+          </div>
+          
+          <div class="float-group mt-6">
+            <textarea id="pesan" rows="5" placeholder=" " required></textarea>
+            <label for="pesan" data-i18n="form-msg">Spesifikasi Komoditas & Volume Pengadaan *</label>
+          </div>
+
+          <div class="mt-10">
+            <button type="submit" id="submit-btn" class="elastic-btn w-full py-5 rounded-[1.5rem] text-white font-bold text-xl bg-brand-orange hover:bg-orange-600 shadow-[0_15px_30px_rgba(242,153,74,0.3)] border-none">
+              <span data-i18n="form-submit">Kirim Request Quotation</span>
+            </button>
+          </div>
+        </form>
+
+        <div id="form-toast" class="hidden mt-8 p-5 rounded-2xl flex items-center gap-5 bg-green-50 border border-green-200 dark:bg-brand-green/20 dark:border-brand-green/40 shadow-sm">
+          <div class="w-10 h-10 rounded-full bg-brand-green flex items-center justify-center text-white text-lg font-bold">✓</div>
+          <span class="text-brand-dark dark:text-white font-medium text-base" data-i18n="form-success">Permintaan berhasil terkirim. Account Manager B2B kami akan segera menghubungi Anda.</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<footer class="bg-[#020617] text-white pt-24 pb-12 border-t-8 border-brand-green">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-14 mb-20">
+      
+      <div class="lg:col-span-4 pr-6">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-2xl bg-brand-green flex items-center justify-center border border-white/10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          </div>
+          <span class="font-display font-black text-2xl tracking-wide">UD NIMARS</span>
+        </div>
+        <p class="text-gray-400 text-base leading-relaxed mb-8" data-i18n="footer-desc">
+          Infrastruktur pasokan segar premium B2B terintegrasi tingkat tinggi. Menghubungkan potensi ladang agrikultur nusantara dengan eksekutif kuliner di seluruh Indonesia.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all cursor-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all cursor-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all cursor-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 lg:col-start-6">
+        <h4 class="font-display font-bold mb-8 text-brand-orange tracking-[0.2em] text-sm uppercase" data-i18n="footer-links">Pintas</h4>
+        <ul class="space-y-4">
+          <li><a href="#about" class="text-gray-400 hover:text-white text-base cursor-none transition-colors" data-i18n="nav-about">Tentang Kami</a></li>
+          <li><a href="#produk" class="text-gray-400 hover:text-white text-base cursor-none transition-colors" data-i18n="nav-product">Produk</a></li>
+          <li><a href="#services" class="text-gray-400 hover:text-white text-base cursor-none transition-colors" data-i18n="footer-services">Layanan B2B</a></li>
+          <li><a href="#csr" class="text-gray-400 hover:text-white text-base cursor-none transition-colors" data-i18n="nav-csr">CSR</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-4">
+        <h4 class="font-display font-bold mb-8 text-brand-orange tracking-[0.2em] text-sm uppercase" data-i18n="footer-newsletter">Katalog & Insight</h4>
+        <p class="text-gray-400 text-base mb-6 leading-relaxed" data-i18n="footer-newsletter-desc">Dapatkan update pergerakan tren harga komoditas dan *price list* bulanan langsung ke email dashboard procurement Anda.</p>
+        <div class="flex h-14">
+          <input type="email" placeholder="Email Corporate Address" class="bg-white/5 border border-white/20 border-r-0 rounded-l-2xl px-6 w-full text-base outline-none focus:border-brand-orange text-white placeholder-gray-500 transition-colors">
+          <button class="bg-brand-orange hover:bg-orange-600 px-8 rounded-r-2xl font-bold text-base cursor-none transition-colors" data-i18n="footer-sub">Subscribe</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
+      <p>&copy; 2026 UD NIMARS. All rights reserved.</p>
+      <div class="flex gap-8">
+        <a href="#" class="hover:text-white cursor-none transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white cursor-none transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-white cursor-none transition-colors">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ─── 1. SMOOTH SCROLLING DENGAN LENIS ───
+  const lenis = new Lenis({
+    duration: 1.4,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smooth: true,
+  });
+  
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Mengatur offset untuk smooth scroll link anchor
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        lenis.scrollTo(target, { offset: -120, duration: 1.5 });
+      }
+    });
+  });
+
+  // ─── 2. SCROLL PROGRESS BAR ───
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrolled / total) * 100;
+    document.getElementById('scroll-progress').style.width = progress + '%';
+  });
+
+  // ─── 3. LOGIKA KURSOR KUSTOM ───
+  const dot = document.getElementById('cursor-dot');
+  const outline = document.getElementById('cursor-outline');
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let outX = mouseX;
+  let outY = mouseY;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+  });
+
+  function animateCursor() {
+    outX += (mouseX - outX) * 0.15;
+    outY += (mouseY - outY) * 0.15;
+    outline.style.left = outX + 'px';
+    outline.style.top  = outY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // ─── 4. LOGIKA HEADER MELAYANG ───
+  const header = document.getElementById('floating-header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+  // ─── 5. LOGIKA MENU MOBILE ───
+  document.getElementById('menu-toggle').addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.remove('hidden');
+    mobileMenu.classList.add('flex');
+    gsap.fromTo(mobileMenu, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  });
+  
+  document.getElementById('close-mobile').addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    gsap.to(mobileMenu, { opacity: 0, duration: 0.3, onComplete: () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+    }});
+  });
+  
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+      const mobileMenu = document.getElementById('mobile-menu');
+      gsap.to(mobileMenu, { opacity: 0, duration: 0.3, onComplete: () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+      }});
+    });
+  });
+
+  // ─── 6. LOGIKA DARK MODE (THEME TOGGLE) ───
+  const themeBtn = document.getElementById('theme-btn');
+  const sunIcon = document.querySelector('.sun-icon');
+  const moonIcon = document.querySelector('.moon-icon');
+
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    
+    // Switch icon visually
+    if (isDark) {
+      sunIcon.classList.remove('hidden');
+      moonIcon.classList.add('hidden');
+    } else {
+      sunIcon.classList.add('hidden');
+      moonIcon.classList.remove('hidden');
+    }
+  });
+
+  // ─── 7. LOGIKA ACCORDION FAQ ───
+  function toggleFaq(el) {
+    const isActive = el.classList.contains('active');
+    
+    // Reset all items
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Set clicked item
+    if (!isActive) {
+      el.classList.add('active');
+    }
+  }
+
+  // ─── 8. ANIMASI GSAP & SCROLLTRIGGER ───
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Parallax pada gambar background hero
+  gsap.to('#hero-bg', {
+    yPercent: 25,
+    scale: 1.1,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+    }
+  });
+
+  // Fade up animasi standar
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.fromTo(el,
+      { y: 70, opacity: 0 },
+      {
+        y: 0, 
+        opacity: 1, 
+        duration: 1.2, 
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  // Animasi angka dinamis (Counter)
+  const counters = document.querySelectorAll('.counter-val');
+  counters.forEach(counter => {
+    ScrollTrigger.create({
+      trigger: counter,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        let targetStr = counter.innerText.replace(/\D/g, ''); // Ambil hanya angkanya saja
+        let target = parseInt(targetStr);
+        let prefix = counter.innerText.replace(/[0-9]/g, '').trim() || '';
+        
+        gsap.to(counter, {
+          innerHTML: target,
+          duration: 3,
+          snap: { innerHTML: 1 },
+          ease: "power2.out",
+          onUpdate: function() {
+            let currentVal = Math.round(counter.innerHTML);
+            // Tambah separator ribuan jika lebih dari 1000
+            if (currentVal >= 1000) {
+              currentVal = currentVal.toLocaleString('id-ID');
+            }
+            // Format ulang dengan prefix (contoh: 500+, 1.200+, 30%)
+            counter.innerHTML = currentVal + (counter.innerHTML.includes('%') ? '%' : '+');
+          }
+        });
+      }
+    });
+  });
+
+  // ─── 9. LOGIKA PENGIRIMAN FORM (SIMULASI API) ───
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const toast = document.getElementById('form-toast');
+    const originalText = btn.innerHTML;
+
+    // Set Loading State
+    btn.innerHTML = 'Memproses Enkripsi...';
+    btn.disabled = true;
+    btn.style.opacity = '0.8';
+    
+    // Set Timeout Simulasi Jaringan
+    setTimeout(() => {
+      btn.innerHTML = 'Quotation Terkirim ✓';
+      btn.style.background = '#2D5A27'; // Warna hijau success
+      
+      // Tampilkan Toast
+      toast.classList.remove('hidden');
+      gsap.fromTo(toast, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 });
+      
+      // Reset Form & Button
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        e.target.reset();
+        
+        gsap.to(toast, { opacity: 0, y: 10, duration: 0.4, onComplete: () => {
+          toast.classList.add('hidden');
+        }});
+      }, 6000);
+    }, 2500);
+  }
+
+  // ─── 10. KAMUS LOKALISASI BAHASA (I18N MASSIF) ───
+  // Memisahkan data struktur JSON secara baris per baris untuk clean code dan ekspansi limit.
+  const i18n = {
+    id: {
+      "nav-home": "Home",
+      "nav-about": "Tentang Kami",
+      "nav-product": "Produk",
+      "nav-portfolio": "Portofolio",
+      "nav-csr": "CSR",
+      "nav-contact": "Kontak Kami",
+      
+      "hero-label": "Premium B2B Fresh Partner",
+      "hero-h1-1": "Hadirkan Kesegaran",
+      "hero-h1-2": "Alam",
+      "hero-h1-3": "pada Standar",
+      "hero-h1-4": "Tertinggi.",
+      "hero-desc": "UD NIMARS adalah tulang punggung rantai pasok industri kuliner. Kami mengorkestrasi distribusi komoditas segar berkualitas premium—langsung dari ladang ke fasilitas bisnis Anda, dengan jaminan presisi waktu dan kesegaran paripurna.",
+      
+      "btn-explore": "Eksplorasi Produk",
+      "btn-contact": "Minta Penawaran Spesial",
+      
+      "stat-farmers": "Petani Mitra",
+      "stat-tonnage": "Ton / Tahun",
+      "stat-sla": "SLA Terpenuhi",
+      
+      "about-label": "Tentang UD NIMARS",
+      "about-h2": "Lebih dari Sekadar Pemasok. Kami adalah Ekosistem.",
+      "about-p1": "Didirikan dengan visi untuk memodernisasi tata niaga agrikultur, UD NIMARS menjembatani kesenjangan antara hasil bumi berkualitas tinggi dengan kebutuhan standar eksak dari industri perhotelan, restoran, dan katering (HORECA).",
+      "about-p2": "Kami menerapkan metode Farm-to-Table yang telah disempurnakan. Proses kami tidak dimulai saat panen, melainkan sejak pemilihan bibit dan edukasi agronomi kepada mitra petani kami. Hal ini memastikan bahwa setiap komoditas yang dilabeli 'NIMARS Premium' benar-benar memenuhi spesifikasi ketat Anda.",
+      "about-p3": "Infrastruktur cold-chain kami dirancang khusus untuk meminimalkan penyusutan fisik dan memastikan setiap daun, buah, dan umbi yang tiba di dapur Anda memiliki umur simpan yang maksimal.",
+      "about-cert": "Sertifikasi Internal",
+      
+      "prod-label": "Katalog Komoditas Eksklusif",
+      "prod-h2": "Kategori Produk Unggulan Kami",
+      "prod-desc": "Semua produk disortir secara manual menggunakan standar parameter B2B Internasional yang mencakup ukuran, kecerahan warna, tingkat kematangan optimum, dan kebersihan fisik.",
+      "prod-1-title": "Sayuran Premium",
+      "prod-1-desc": "Selada hidroponik, sayuran daun hijau, umbi-umbian, dan bumbu dapur aromatik segar. Kami menjamin tingkat kerenyahan maksimal dengan penyortiran yang membuang 100% defect visual sebelum dikirim ke dapur Anda.",
+      "prod-moq-1": "MOQ: 50 Kg",
+      "prod-2-title": "Buah Tropis & Eksotis",
+      "prod-2-desc": "Melon grade A, mangga standar ekspor, alpukat mentega, dan buah tropis pilihan lainnya. Tingkat brix (kemanisan) dan fase kematangan dikurasi secara manual secara presisi untuk memenuhi standar banquet hotel bintang lima.",
+      "prod-moq-2": "MOQ: 100 Kg",
+      
+      "values-h2": "Mengapa <span class=\"text-brand-orange\">UD NIMARS</span> Menjadi Pilihan Utama?",
+      "values-desc": "Dalam industri logistik di mana waktu rotasi dan konsistensi adalah segalanya, kami menolak untuk mengambil jalan pintas. Setiap pilar operasional kami dibangun untuk melindungi efisiensi dan reputasi dapur Anda.",
+      "val-1-title": "Traceability (Keterlacakan)",
+      "val-1-desc": "Setiap batch pengiriman dapat dilacak kembali secara transparan ke lahan tanam asalnya, memastikan standar keamanan pangan (food safety) 100%.",
+      "val-2-title": "Fixed Pricing Agreement",
+      "val-2-desc": "Melindungi HPP (Harga Pokok Penjualan) bisnis Anda dari fluktuasi harga pasar yang ekstrem melalui sistem kontrak harga terkunci secara absolut.",
+      "val-3-title": "Replacement Guarantee",
+      "val-3-desc": "Menemukan defect fisik saat proses receiving? Kami memproses penggantian barang (retur) secara otomatis di pengiriman H+1 tanpa prosedur berbelit.",
+      
+      "port-label": "Kemitraan Terpercaya",
+      "port-h2": "Dipercaya oleh Eksekutif Industri",
+      "testi-1-text": "\"Kualitas sayuran organik selalu memuaskan. Presisi pengiriman harian mereka benar-benar menyelamatkan cost inventory F&B kami setiap minggunya.\"",
+      "testi-2-text": "\"Sistem cold-chain NIMARS juara. Umur simpan buah-buahan potong di etalase supermarket kami meningkat pesat sejak bermitra.\"",
+      
+      "csr-label": "Sustainabilitas",
+      "csr-h2": "Memberdayakan Alam & Komunitas",
+      "csr-data-title": "Dampak Nyata Komitmen Kami (Data Terukur)",
+      "csr-data-desc": "Kemitraan Anda dengan UD NIMARS adalah langkah nyata untuk perubahan ekosistem. Metrik Capaian Data Kami (Per 2026):",
+      "csr-m1-title": "Mitra Petani Berdaya",
+      "csr-m1-desc": "Keluarga petani lokal yang tergabung dalam program *fair trade* kami.",
+      "csr-m2-title": "Lahan Tani Berkelanjutan",
+      "csr-m2-desc": "Hektar perkebunan yang dikelola secara ketat menggunakan standar organik.",
+      "csr-m3-title": "Pengurangan Limbah Pangan",
+      "csr-m3-desc": "Tingkat reduksi sampah pangan nasional melalui sistem logistik cerdas dan kompos.",
+      "csr-m4-title": "Edukasi Petani Intensif",
+      "csr-m4-desc": "Sesi pelatihan agronomi dan teknologi pertanian modern yang digelar per tahun.",
+      
+      "faq-label": "Pusat Bantuan",
+      "faq-h2": "Pertanyaan Seputar Kemitraan",
+      "faq-desc": "Hal-hal operasional teknis yang sering ditanyakan oleh eksekutif tim Procurement sebelum memulai kerja sama resmi.",
+      "faq-1-q": "Berapa Minimum Order Quantity (MOQ) untuk pesanan B2B?",
+      "faq-1-a": "MOQ operasional bervariasi bergantung pada sifat komoditas. Secara umum, untuk zona pengiriman Jabodetabek, kami melayani MOQ mulai dari 50 Kg per pengiriman gabungan. Silakan hubungi tim account manager kami untuk merumuskan informasi detail yang sesuai dengan profil bisnis Anda.",
+      "faq-2-q": "Bagaimana mekanisme jika terdapat barang rusak atau reject saat diterima?",
+      "faq-2-a": "Kualitas adalah harga mati. Kami memiliki kebijakan 'Replacement Guarantee' tanpa debat. Jika tim receiving Anda menemukan produk yang tidak sesuai standar spesifikasi visual maupun organoleptik, kami akan langsung menggantinya secara gratis pada jadwal pengiriman terdekat berikutnya (H+1).",
+      "faq-3-q": "Apakah UD NIMARS menyediakan skema Term of Payment (TOP) untuk hotel?",
+      "faq-3-a": "Tentu. Kami mendesain skema pembayaran yang ramah untuk cashflow industri. Bagi klien korporasi dengan Purchase Agreement valid berdurasi minimum 6 bulan, kami sanggup memberikan fasilitas pembayaran mundur (TOP) mulai dari rentang 14 hingga maksimal 30 hari kerja (setelah invoice diterima).",
+      "faq-4-q": "Bisakah menggunakan custom packaging untuk etalase Supermarket (Private Label)?",
+      "faq-4-a": "Sangat bisa didiskusikan. UD NIMARS melayani layanan co-packing dan pelabelan khusus (termasuk penerapan shrink-wrap, mesh bag premium, atau penempelan stiker barcode merk Anda) menggunakan material food-grade bersertifikat, khusus diperuntukkan bagi jaringan klien retail premium kami.",
+      
+      "contact-h2": "Mari Berdiskusi.",
+      "contact-desc": "Representatif kami akan segera merancang quotation yang paling efisien untuk menutupi volume bisnis Anda.",
+      "contact-office": "Head Office",
+      "contact-phone": "Direct Line (B2B)",
+      "contact-email": "Corporate Email",
+      
+      "form-name": "Nama Lengkap *",
+      "form-company": "Nama Perusahaan *",
+      "form-email": "Email Korporat *",
+      "form-phone": "No. WhatsApp *",
+      "form-category": "Kategori Industri Anda *",
+      "form-msg": "Spesifikasi Komoditas & Volume Pengadaan *",
+      "form-submit": "Kirim Request Quotation",
+      "form-success": "Permintaan berhasil terkirim. Account Manager B2B kami akan segera menghubungi Anda.",
+      
+      "footer-desc": "Infrastruktur pasokan segar premium B2B terintegrasi tingkat tinggi. Menghubungkan potensi ladang agrikultur nusantara dengan eksekutif kuliner di seluruh Indonesia.",
+      "footer-links": "Pintas",
+      "footer-services": "Layanan B2B",
+      "footer-newsletter": "Katalog & Insight",
+      "footer-newsletter-desc": "Dapatkan update pergerakan tren harga komoditas dan price list bulanan langsung ke email dashboard procurement Anda.",
+      "footer-sub": "Subscribe"
+    },
+    en: {
+      "nav-home": "Home",
+      "nav-about": "About Us",
+      "nav-product": "Products",
+      "nav-portfolio": "Portfolio",
+      "nav-csr": "CSR",
+      "nav-contact": "Contact Us",
+      
+      "hero-label": "Premium B2B Fresh Partner",
+      "hero-h1-1": "Deliver the Freshness",
+      "hero-h1-2": "of Nature",
+      "hero-h1-3": "at the",
+      "hero-h1-4": "Highest Standards.",
+      "hero-desc": "UD NIMARS is the backbone of the culinary industry's supply chain. We orchestrate the distribution of premium fresh commodities—straight from the farm to your business facility, ensuring precise timing and ultimate freshness.",
+      
+      "btn-explore": "Explore Products",
+      "btn-contact": "Request a Quote",
+      
+      "stat-farmers": "Partner Farmers",
+      "stat-tonnage": "Tons / Year",
+      "stat-sla": "SLA Met",
+      
+      "about-label": "About UD NIMARS",
+      "about-h2": "More Than Just a Supplier. We Are an Ecosystem.",
+      "about-p1": "Founded with the vision to modernize agricultural commerce, UD NIMARS bridges the gap between high-quality produce and the exact standards required by the hospitality, restaurant, and catering (HORECA) industry.",
+      "about-p2": "We implement a perfected Farm-to-Table method. Our process doesn't start at harvest, but from seed selection and agronomy education for our partner farmers. This ensures that every commodity labeled 'NIMARS Premium' strictly meets your specifications.",
+      "about-p3": "Our cold-chain infrastructure is specifically designed to minimize physical shrinkage and ensure that every leaf, fruit, and root arriving in your kitchen has maximum shelf life.",
+      "about-cert": "Internal Certification",
+      
+      "prod-label": "Exclusive Commodity Catalog",
+      "prod-h2": "Our Premium Product Categories",
+      "prod-desc": "All products are manually sorted using International B2B parameters covering size, color brightness, optimal ripeness level, and physical cleanliness.",
+      "prod-1-title": "Premium Vegetables",
+      "prod-1-desc": "Hydroponic lettuce, leafy greens, root vegetables, and fresh aromatic spices. We guarantee maximum crispness with a sorting process that removes 100% of visual defects before delivery to your kitchen.",
+      "prod-moq-1": "MOQ: 50 Kg",
+      "prod-2-title": "Tropical & Exotic Fruits",
+      "prod-2-desc": "Grade A melons, export-standard mangoes, butter avocados, and other selected tropical fruits. The brix (sweetness) and ripeness phases are manually curated precisely to meet five-star hotel banquet standards.",
+      "prod-moq-2": "MOQ: 100 Kg",
+      
+      "values-h2": "Why Choose <span class=\"text-brand-orange\">UD NIMARS</span> as Your Primary Partner?",
+      "values-desc": "In the logistics industry where turnaround time and consistency are everything, we refuse to cut corners. Every pillar of our operations is built to protect your kitchen's efficiency and reputation.",
+      "val-1-title": "Traceability",
+      "val-1-desc": "Every delivery batch can be transparently traced back to its origin farm, ensuring 100% food safety standards.",
+      "val-2-title": "Fixed Pricing Agreement",
+      "val-2-desc": "Protect your business's COGS from extreme market price fluctuations through an absolute locked-price contract system.",
+      "val-3-title": "Replacement Guarantee",
+      "val-3-desc": "Found a physical defect during receiving? We automatically process the replacement of goods on the T+1 delivery without complicated procedures.",
+      
+      "port-label": "Trusted Partnerships",
+      "port-h2": "Trusted by Industry Executives",
+      "testi-1-text": "\"The quality of the organic vegetables is always satisfying. Their daily delivery precision truly saves our F&B inventory costs every single week.\"",
+      "testi-2-text": "\"NIMARS' cold-chain system is top-notch. The shelf-life of cut fruits in our supermarket displays has increased tremendously since partnering.\"",
+      
+      "csr-label": "Sustainability",
+      "csr-h2": "Empowering Nature & Communities",
+      "csr-data-title": "The Real Impact of Our Commitment (Measured Data)",
+      "csr-data-desc": "Your partnership with UD NIMARS is a real step towards ecosystem change. Our Data Achievement Metrics (As of 2026):",
+      "csr-m1-title": "Empowered Farmer Partners",
+      "csr-m1-desc": "Local farmer families joining our fair trade program.",
+      "csr-m2-title": "Sustainable Farmland",
+      "csr-m2-desc": "Hectares of plantations strictly managed using organic standards.",
+      "csr-m3-title": "Food Waste Reduction",
+      "csr-m3-desc": "National food waste reduction rate through smart logistics and composting.",
+      "csr-m4-title": "Intensive Farmer Education",
+      "csr-m4-desc": "Agronomy and modern agricultural technology training sessions held per year.",
+      
+      "faq-label": "Help Center",
+      "faq-h2": "Partnership FAQs",
+      "faq-desc": "Technical operational matters frequently asked by Procurement executives before starting an official collaboration.",
+      "faq-1-q": "What is the Minimum Order Quantity (MOQ) for B2B orders?",
+      "faq-1-a": "Operational MOQ varies depending on the nature of the commodity. Generally, for the Greater Jakarta delivery zone, we serve MOQs starting from 50 Kg per combined delivery. Please contact our account manager team to formulate detailed information suited to your business profile.",
+      "faq-2-q": "What is the mechanism if there are damaged or rejected goods upon receipt?",
+      "faq-2-a": "Quality is non-negotiable. We have a 'Replacement Guarantee' policy with no debate. If your receiving team finds products that do not meet the visual and organoleptic specification standards, we will immediately replace them free of charge on the very next delivery schedule (T+1).",
+      "faq-3-q": "Does UD NIMARS provide a Term of Payment (TOP) scheme for hotels?",
+      "faq-3-a": "Certainly. We design payment schemes that are friendly to industry cash flow. For corporate clients with a valid Purchase Agreement lasting a minimum of 6 months, we can provide deferred payment facilities (TOP) ranging from 14 up to a maximum of 30 working days (after the invoice is received).",
+      "faq-4-q": "Can we use custom packaging for Supermarket displays (Private Label)?",
+      "faq-4-a": "Highly negotiable. UD NIMARS provides co-packing services and custom labeling (including the application of shrink-wrap, premium mesh bags, or barcode sticker placement of your brand) using certified food-grade materials, exclusively intended for our premium retail client network.",
+      
+      "contact-h2": "Let's Talk Business.",
+      "contact-desc": "Our representatives will immediately design the most efficient quotation to cover your business volume.",
+      "contact-office": "Head Office",
+      "contact-phone": "Direct Line (B2B)",
+      "contact-email": "Corporate Email",
+      
+      "form-name": "Full Name *",
+      "form-company": "Company Name *",
+      "form-email": "Corporate Email *",
+      "form-phone": "WhatsApp Number *",
+      "form-category": "Your Industry Category *",
+      "form-msg": "Commodity Specs & Procurement Volume *",
+      "form-submit": "Send Quotation Request",
+      "form-success": "Request successfully sent. Our B2B Account Manager will contact you shortly.",
+      
+      "footer-desc": "High-level integrated premium B2B fresh supply infrastructure. Connecting the potential of the archipelago's agricultural fields with culinary executives across Indonesia.",
+      "footer-links": "Shortcuts",
+      "footer-services": "B2B Services",
+      "footer-newsletter": "Catalog & Insights",
+      "footer-newsletter-desc": "Get updates on commodity price trend movements and monthly price lists straight to your procurement dashboard email.",
+      "footer-sub": "Subscribe"
+    }
+  };
+
+  // Fungsi pengubah bahasa global
+  function switchLanguage(lang) {
+    // 1. Ubah state tombol aktif
+    document.getElementById('btn-id').classList.remove('active');
+    document.getElementById('btn-en').classList.remove('active');
+    document.getElementById(`btn-${lang}`).classList.add('active');
+
+    // 2. Loop dan ganti semua teks berbasis ID i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (i18n[lang][key]) {
+        el.innerHTML = i18n[lang][key];
+      }
+    });
+
+    // 3. Penanganan khusus untuk atribut dalam Form (Label) agar tidak menimpa elemen input di dalamnya
+    if (lang === 'en') {
+      document.querySelector('label[for="nama"]').innerText = "Full Name *";
+      document.querySelector('label[for="perusahaan"]').innerText = "Company Name *";
+      document.querySelector('label[for="email"]').innerText = "Corporate Email *";
+      document.querySelector('label[for="telp"]').innerText = "WhatsApp Number *";
+      document.querySelector('label[for="pesan"]').innerText = "Commodity Specs & Procurement Volume *";
+    } else {
+      document.querySelector('label[for="nama"]').innerText = "Nama Lengkap *";
+      document.querySelector('label[for="perusahaan"]').innerText = "Nama Perusahaan *";
+      document.querySelector('label[for="email"]').innerText = "Email Korporat *";
+      document.querySelector('label[for="telp"]').innerText = "No. WhatsApp *";
+      document.querySelector('label[for="pesan"]').innerText = "Spesifikasi Komoditas & Volume Pengadaan *";
+    }
+  }
+</script>
+
+</body>
+</html>
